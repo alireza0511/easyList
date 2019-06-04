@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 // 31.13 because we want use product manager as body in our app let import it
 import './product_manager.dart';
+// 47.1 this package help to debuge ui
+import 'package:flutter/rendering.dart';
+/* 47.2  
+void main() => runApp(MyApp()); */
+void main() {
+  // 47.2 this variable help to see the ui elements
+  // debugPaintSizeEnabled = true;
+  // 48.1 show text base line
+  // debugPaintBaselinesEnabled = true;
+  // 48.2 This shows you where the tap event is registered
+  // debugPaintPointersEnabled = true;
 
-void main() => runApp(MyApp());
+  runApp(MyApp());
+}
 
 
 /* 27.1 this work an show a pic + title + btn but btn doesn't work because
@@ -143,6 +155,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // 48.3 show grid materail on ui
+      // debugShowMaterialGrid: true,
+      // 35.1
+      theme: ThemeData(
+        //35.1.3
+        brightness: Brightness.light,
+        //35.1.1
+        primarySwatch: Colors.deepOrange,
+        //35.1.2
+        accentColor: Colors.deepPurple
+      ),
       home: Scaffold(
         appBar: AppBar(
           title: Text('EasyList'),
@@ -150,7 +173,11 @@ class MyApp extends StatelessWidget {
         /* 32.5 now we can pass our value to statful widget here 
         //31.14 let's call ProductManager as body of scaffold widget, create an object based on it by adding parentheses.
         body: ProductManager(), 32.5*/
-        body: ProductManager('Food Tester'),
+        /* 36.2 
+        body: ProductManager('Food Tester'), 36.2*/
+        /* 60.3
+        body: ProductManager(startingProduct:'Food Tester'), */
+        body: ProductManager(),
       ),
     );
   }
@@ -159,3 +186,6 @@ class MyApp extends StatelessWidget {
 /* 31.15 you want to work with stateless and stateful widgets, use as many stateless widgets
 as possible and have a few selected stateful widgets which actually manage your 
 data and change the data */
+
+// 34.1 let speak about wedget life cycle check the terminal
+// 37.1 let's add the Raised button in to his own wedget. first creat product_control.dart file
