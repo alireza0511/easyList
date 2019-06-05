@@ -1,47 +1,72 @@
 import 'package:flutter/material.dart';
+import './pages/product.dart';
 
-/* 30.3 You can build this class in both ways however actually, the more elegant
- ways to use the stateless widget here and now this can be confusing because I 
- just said that this column card is the only thing which changes and that's 
- correct but the change of data actually happens somewhere else, you could argue.
- The products widget here just receives a list of products and that list might 
- be changed but it can be changed outside of that products widget.*/
 class Products extends StatelessWidget {
-  /* 30.5.1  this will allow us to pass data into products through its constructor,
-   bind it to to products.
-  30.5.3 it's a stateless widget and we specifically have to mark this property 
-  as unchangeable.We do so by adding a 'final' keyword in front of it. 
-  I means this value just set from the outside and if new data is passed in from 
-  outside, it will simply replace the old value, not change it, replace it and 
-  then call build again with the replaced value.*/
-  final List<String> products;
-  /* 36.4 optional arguments for positional arguments.
-  and also we have to add the const keyword here which means this is a list which can't 
-  be changed
+  // 70.7 change to map
+  // final List<String> products;
+  final List<Map<String, String>> products; //70.7
+  // 71.5
+  final Function deleteProduct;
 
-  Products(this.products) { 36.4*/
-  Products([this.products = const []]) {
-    // 34.2
+// 71.6 
+  // Products([this.products = const []]) {
+    Products(this.products, {this.deleteProduct}) {
     print('E: [Products Widget] Constructor');
   }
 
-  // 59.2 creat this wedget to make our recycler view work
   Widget _buildProductItem(BuildContext context, int index) {
-    // 59.3 cut/past Card wedget from build
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset('assets/food.jpg'),
-          // 59.4
-          Text(products[index])
+          // 70.8
+          // Image.asset('assets/food.jpg'),
+          Image.asset(products[index]['image']),
+          Text(products[index]['title']), //70.8
+          // 67.1 adding btn for nav
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                child: Text('Details'),
+                /* 71.2.1 use then to get back information from pass data from detail view
+                // 68.1 use navigator to navigate to other page
+                onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        // 70.9
+                        builder: (BuildContext context) => ProductPage(
+                            products[index]['title'],
+                            products[index]['image']), //70.9
+                      ),
+                ), 71.2.1 */
+                /* 71.2.2 then is an object which allows you to listen to some future event and 
+                we get back such a future from the push method and there we can add the then method.
+                71.2.2*/
+                onPressed: () => Navigator.push<bool>(
+                      context,
+                      MaterialPageRoute(
+                        // 70.9
+                        builder: (BuildContext context) => ProductPage(
+                            products[index]['title'],
+                            products[index]['image']), //70.9
+                      ),
+                ).then((bool value) {
+                  // 71.7
+                  if (value){
+                    deleteProduct(index);
+                  } // 71.7
+                  // print(value);
+
+                }), // 71.2.2
+              )
+            ],
+          ) //67.1
         ],
       ),
     );
   }
 
-// 61.4 let extract every thing in one function
   Widget _buildProductList() {
-    // 61.5 cut/past
     Widget productCard;
     if (products.length > 0) {
       productCard = ListView.builder(
@@ -56,67 +81,12 @@ class Products extends StatelessWidget {
       productCard = Center(
         child: Text('No products found, please add some'),
       );
-
-      /* 62.1 if we dont want anything to show
-      productCard = Container(); */
     }
-    return productCard; // 61.5
+    return productCard;
   }
 
   @override
   Widget build(BuildContext context) {
-    /*61.5 cut/past 
-    // 61.1
-    Widget productCard;
-    // 61.2
-    if (products.length > 0) {
-      productCard = ListView.builder(
-        // 59.5 the item we need is a card wedget
-        itemBuilder: _buildProductItem,
-        // 59.6 the count of array
-        itemCount: products.length,
-      );
-    } else {
-      productCard = Center(
-        child: Text('No products found, please add some'),
-      );
-    }
-    // 34.3
-    print('F: [Products Widget] build()');
-
-    return
-        /* 61.3  
-    //60.2.1
-    products.length > 0 ?
-    /* 59.1 how use a some sort of recycler viewer
-    /* 58.1 create listView 
-    // 30.4 cut/past column widget from main.dart file
-    Column( 58.1*/
-    ListView(
-      // 30.5.2 remove under score from children: _products
-      children: products
-          .map( // 59.3 cut/past the Card wedget to _buildProductItem()
-            (element) => Card(
-                  child: Column(
-                    children: <Widget>[
-                      Image.asset('assets/food.jpg'),
-                      Text(element)
-                    ],
-                  ),
-                ), // 59.3
-          )
-          .toList(),
-    ); 59.1*/ //we need to use listView.builder this behavior like recyclerview and adapter
-    ListView.builder(
-      // 59.5 the item we need is a card wedget
-      itemBuilder: _buildProductItem ,
-      // 59.6 the count of array
-      itemCount: products.length,
-    ) 
-    // 60.2.2
-    : Center(child: Text('No products found, please add some'),)
-    ; */
-        productCard; 61.5*/
-        return _buildProductList();
+    return _buildProductList();
   }
 }

@@ -1,172 +1,30 @@
 import 'package:flutter/material.dart';
-// 31.13 because we want use product manager as body in our app let import it
 import './product_manager.dart';
-// 47.1 this package help to debuge ui
 import 'package:flutter/rendering.dart';
-/* 47.2  
-void main() => runApp(MyApp()); */
+/* 73.5 
+// 66.4
+import './pages/products.dart'; 73.5*/
+import './pages/auth.dart';
+
 void main() {
-  // 47.2 this variable help to see the ui elements
-  // debugPaintSizeEnabled = true;
-  // 48.1 show text base line
-  // debugPaintBaselinesEnabled = true;
-  // 48.2 This shows you where the tap event is registered
-  // debugPaintPointersEnabled = true;
 
   runApp(MyApp());
 }
 
-
-/* 27.1 this work an show a pic + title + btn but btn doesn't work because
-for changing data we need StateFulWidget 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('EasyList'),
-        ),
-        body: Column(
-          children: [
-            Container(margin: EdgeInsets.all(10.0),
-            child: RaisedButton(
-              onPressed: () {
-
-              },
-              child: Text('Add Product'),
-            ),
-            ),
-            Card(
-              child: Column(
-                children: <Widget>[
-                  Image.asset('assets/food.jpg'),
-                  Text('Food Paradise')
-                ],
-              ),
-            ),
-          ],
-        )),
-    );
-  }
-} 27.1*/
-
-/* 31.10 Now we're not handling any state in the main.dart file anymore so we 
-can turn this stateful widget back to a stateless widgetate 
-// 27.2 create a statefulWdget to work with btn
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    //27.4 return _MyAppState and instantiate it by adding ()
-    return _MyAppState();
-  }
-} 31.10*/
-
-/* 31.12 remove the _MyAppState class 
-/* 27.3.1 
-because the way you work with state in flutter is that you actually create two 
-classes which will work together and this is kind of the connection createState 
-will return a new state object with a state that is configured to work with a 
-stateful widget.  let's create 2nd class 
-27.3.2 : the underscore is just a convention for classes that should not be usable 
-by other parts or other files but only from inside this file and flutter will 
-actually respect this.
-27.3.3 : Now we just need to tell flutter that this _MyAppState class belongs to MyApp 
-widget and we do this by adding these angle brackets <MyApp> after state, we 
-add the name of the class to which this state belongs and now the connection 
-between the two classes is set up.*/
-class _MyAppState extends State<MyApp> {
-/* 28.1 : We created a stateful widget but the question is 
-how can we now manage and change data inside of it? 
-let add a array to hold or new product so because this array just use at this class
-let add _ at first of name
-31.5 : cut/past _product list from main.dart file */
-  List<String> _products = ['Food Tester']; // 31.5
-
-  @override
-  Widget build(BuildContext context) {
-    // 27.3.4 copy all ui widget at 27.1 here
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('EasyList'),
-          ),
-          body: Column(
-            children: [
-              /* 31.4 cut/past column widget to products.dart file */
-              Container(
-                margin: EdgeInsets.all(10.0),
-                child: RaisedButton(
-                  onPressed: () {
-                    /* 29.1.1  now by clicking btn we can change or product -> build executed again
-                    -> update _product list map to card -> render this card to screen 
-                    29.1.2 so add a value to _product list
-                    _products.add('Advanced Food Tester');
-                    print(_products); 29.1.2 */
-                    /* 29.2 you have to tell flutter that you're changing the data 
-                    in your stateful widget or put in other words that you're 
-                    changing its state. And you do this by calling the setState method.*/
-                    setState(() {
-                      _products.add('Advanced Food Tester');
-                    });
-
-                  },
-                  child: Text('Add Product'),
-                ),
-              ), // 31.4
-              /* 28.3.1 now we can't convert a list into a single widget so what I 
-            will instead do is I will add another column 
-             30.4 cut/past column widget to products.dart file */
-              Column(
-                children:
-                    /* 28.2.1 now we can use _product here to change data of widget.
-             map method allows you to transform every element in that list
-             into a new element and return it 
-             28.2.3: One important note though, you need to wrap element 
-             between parentheses, this is the argument list for the function,*/
-                    _products
-                        .map(
-                          (element) => Card(
-                                child: Column(
-                                  children: <Widget>[
-                                    Image.asset('assets/food.jpg'),
-                                    // 28.2.2 use element insted of hard code text
-                                    Text(element)
-                                  ],
-                                ),
-                              ),
-                        )
-                        // 28.3.2 we need to convert or product map to a array list
-                        .toList(),
-              ) //30.4
-            ],
-          )),
-    );
-  }
-} 31.12*/
-
-/* 30.1 : at this step we want split the app into granular pices
-   30.2 : let create a new file in "lib" folder with name 'products'*/
-/* 31.1 : let create another file in "lib" folder with name 'product_manager'*/
-/* 32.1  what if our stateful widget also wants to receive some data from 
-  outside*/
-// 31.11 make MyApp StatelessWidget
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      // 48.3 show grid materail on ui
-      // debugShowMaterialGrid: true,
-      // 35.1
+     
       theme: ThemeData(
-        //35.1.3
+        
         brightness: Brightness.light,
-        //35.1.1
         primarySwatch: Colors.deepOrange,
-        //35.1.2
         accentColor: Colors.deepPurple
       ),
-      home: Scaffold(
+      home: 
+      /* 66.3 cut/copy the from main.dart
+      Scaffold(
         appBar: AppBar(
           title: Text('EasyList'),
         ),
@@ -178,14 +36,17 @@ class MyApp extends StatelessWidget {
         /* 60.3
         body: ProductManager(startingProduct:'Food Tester'), */
         body: ProductManager(),
-      ),
+      ), 66.3 */ 
+      /* 73.6 use auth pas as defualt starting page
+      // 66.5
+      HomePage(), 73.6*/
+      AuthPage(),
     );
   }
 }
 
-/* 31.15 you want to work with stateless and stateful widgets, use as many stateless widgets
-as possible and have a few selected stateful widgets which actually manage your 
-data and change the data */
-
-// 34.1 let speak about wedget life cycle check the terminal
-// 37.1 let's add the Raised button in to his own wedget. first creat product_control.dart file
+// 66.1 because we want navigate to other pages so we create "pages" subfolder
+// 66.2 create home.dart file in pages subfolder
+// 67.2 create deatil page product.dart
+// 73.1 How If we want to push a new page but replace the existing one like auth page. So let's make auth.dart file
+// 74 Adding the Slidedrawer
