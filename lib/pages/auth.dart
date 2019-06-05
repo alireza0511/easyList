@@ -14,12 +14,14 @@ class AuthPage extends StatelessWidget {
         child: RaisedButton(
           child: Text('Log in'),
           onPressed: () {
+            /*81.2 
             // 73.8 we want replace login page by products page, replacement simply means the current page completely gets replaced with this one.
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => ProductsPage()),
-            );
+            ); 81,2*/
+            Navigator.pushReplacementNamed(context, '/');
           },
         ),
       ),

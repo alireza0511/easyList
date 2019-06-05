@@ -8,9 +8,9 @@ class Products extends StatelessWidget {
   // 71.5
   final Function deleteProduct;
 
-// 71.6 
+// 71.6
   // Products([this.products = const []]) {
-    Products(this.products, {this.deleteProduct}) {
+  Products(this.products, {this.deleteProduct}) {
     print('E: [Products Widget] Constructor');
   }
 
@@ -42,22 +42,27 @@ class Products extends StatelessWidget {
                 /* 71.2.2 then is an object which allows you to listen to some future event and 
                 we get back such a future from the push method and there we can add the then method.
                 71.2.2*/
-                onPressed: () => Navigator.push<bool>(
+                onPressed: () =>
+                    /*81.3 
+                Navigator.push<bool>(
                       context,
+                      /* 79.2 cut and past
                       MaterialPageRoute(
                         // 70.9
                         builder: (BuildContext context) => ProductPage(
                             products[index]['title'],
                             products[index]['image']), //70.9
-                      ),
-                ).then((bool value) {
-                  // 71.7
-                  if (value){
-                    deleteProduct(index);
-                  } // 71.7
-                  // print(value);
-
-                }), // 71.2.2
+                      ), // 79.2 cut and past */
+                      ) 81.3*/
+                    Navigator.pushNamed<bool>(
+                            context, '/product/' + index.toString())//81.3
+                        .then((bool value) {
+                      // 71.7
+                      if (value) {
+                        deleteProduct(index);
+                      } // 71.7
+                      // print(value);
+                    }), // 71.2.2
               )
             ],
           ) //67.1

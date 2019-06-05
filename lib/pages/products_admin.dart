@@ -4,7 +4,7 @@ import './products.dart';
 import './product_create.dart';
 import './product_list.dart';
 
-class ProductsAdmin extends StatelessWidget {
+class ProductsAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
@@ -25,11 +25,12 @@ class ProductsAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Manage Products 2'),
                 onTap: () {
-                  //assignment 3
+                  /*81.1 
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (BuildContext context) => ProductsPage()));
+                          builder: (BuildContext context) => ProductsPage())); 81.1*/
+                  Navigator.pushReplacementNamed(context, '/');
                 },
               )
             ],

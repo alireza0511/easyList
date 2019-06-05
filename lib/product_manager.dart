@@ -2,6 +2,35 @@ import 'package:flutter/material.dart';
 import './products.dart';
 import './product_control.dart';
 
+// 80.4.1
+class ProductManager extends StatelessWidget {
+  // 80.4.2
+  final List<Map<String,String>> products;
+  final Function addProduct;
+  final Function deleteProduct;
+
+  //80.4.3
+  ProductManager(this.products, this.addProduct, this.deleteProduct);
+
+
+  @override
+  Widget build(BuildContext context) {
+    print('D: [ProductManager State] bulid()');
+
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.all(10.0),
+          child: ProductControl(addProduct),
+        ),
+        // 71.4
+        // Expanded(child: Products(_products))
+        Expanded(child: Products(products, deleteProduct: deleteProduct)) // 71.4
+      ],
+    );
+  }
+}
+/* 80.4 we dont need stateful in here let's change it to stateless wedget 
 class ProductManager extends StatefulWidget {
   // 70.5 string to map
   // final String startingProduct; // 70.5
@@ -39,7 +68,7 @@ class _ProductManagerState extends State<ProductManager> {
     print(' [ProductManager State] didUpdateWidget()');
     super.didUpdateWidget(oldWidget);
   }
-
+/*80.3 cut/copy 
   // 70.3 change argument to map hold more object
   void _addProduct(Map<String, String> product) {
     setState(() {
@@ -53,6 +82,7 @@ class _ProductManagerState extends State<ProductManager> {
       _products.removeAt(index);
     });
   } // 71.3
+  80.3 */
 
   @override
   Widget build(BuildContext context) {
@@ -70,4 +100,4 @@ class _ProductManagerState extends State<ProductManager> {
       ],
     );
   }
-}
+} 80.4*/

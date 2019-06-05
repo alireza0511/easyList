@@ -20,10 +20,11 @@ class ProductsAdmin2 extends StatelessWidget {
               title: Text('Manage Products 2'),
               onTap: () {
                 //assignment 3
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => ProductsPage()));
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context) => ProductsPage()));
+                        Navigator.pushReplacementNamed(context, '/');
               },
             )
           ],

@@ -5,9 +5,19 @@ import './products_admin.dart';
 import './products_admin1.dart';
 //assignment 3
 import './products_admin2.dart';
+import '../product_manager.dart';
 
 // 73.4 HomePage to ProductsPage
 class ProductsPage extends StatelessWidget {
+
+  //80.7
+  final List<Map<String,String>> products;
+  final Function addProduct;
+  final Function deleteProduct;
+
+  // 80.8
+  ProductsPage(this.products,this.addProduct,this.deleteProduct);
+
   @override
   Widget build(BuildContext context) {
     // 66.3 cut/copy the from main.dart
@@ -26,11 +36,12 @@ class ProductsPage extends StatelessWidget {
               
               title: Text('Manage Products'),
               onTap: () {
-                //assignment 2
-                Navigator.push(
+                /* 78.3 now we can use route name for pushing 
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => ProductsAdmin()));
+                        builder: (BuildContext context) => ProductsAdminPage())); */
+                        Navigator.pushReplacementNamed(context,'/admin'); // 78.3
               },
             ),
             ListTile(
@@ -62,7 +73,9 @@ class ProductsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('EasyList'),
       ),
-      body: ProductManager(),
+      // 80.9
+      // body: ProductManager(), 80.9
+      body: ProductManager(products,addProduct,deleteProduct),
     );
   }
 }
