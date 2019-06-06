@@ -24,7 +24,7 @@ class ProductsAdmin2 extends StatelessWidget {
                 //     context,
                 //     MaterialPageRoute(
                 //         builder: (BuildContext context) => ProductsPage()));
-                        Navigator.pushReplacementNamed(context, '/');
+                        Navigator.pushReplacementNamed(context, '/products');
               },
             )
           ],

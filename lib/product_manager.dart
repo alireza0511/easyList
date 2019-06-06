@@ -4,14 +4,16 @@ import './product_control.dart';
 
 // 80.4.1
 class ProductManager extends StatelessWidget {
+  //92.15.5 String tp dynamic
   // 80.4.2
-  final List<Map<String,String>> products;
-  final Function addProduct;
-  final Function deleteProduct;
+  final List<Map<String, dynamic>> products;
+  // 92.4
+  // final Function addProduct;
+  // final Function deleteProduct; //92.4
 
   //80.4.3
-  ProductManager(this.products, this.addProduct, this.deleteProduct);
-
+  //92.5 ProductManager(this.products, this.addProduct, this.deleteProduct);
+  ProductManager(this.products);
 
   @override
   Widget build(BuildContext context) {
@@ -19,13 +21,17 @@ class ProductManager extends StatelessWidget {
 
     return Column(
       children: [
+        /*92.5 we dont need add btn anymore here 
         Container(
           margin: EdgeInsets.all(10.0),
           child: ProductControl(addProduct),
-        ),
+        ), 92.5 */
         // 71.4
         // Expanded(child: Products(_products))
-        Expanded(child: Products(products, deleteProduct: deleteProduct)) // 71.4
+        Expanded(
+            child:
+                //92.6 Products(products, deleteProduct: deleteProduct)) // 71.4
+                Products(products))
       ],
     );
   }

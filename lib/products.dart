@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import './pages/product.dart';
 
 class Products extends StatelessWidget {
+  //92.15.4 String tp dynamic
   // 70.7 change to map
   // final List<String> products;
-  final List<Map<String, String>> products; //70.7
+  final List<Map<String, dynamic>> products; //70.7
   // 71.5
-  final Function deleteProduct;
+  //92.7 final Function deleteProduct;
 
 // 71.6
   // Products([this.products = const []]) {
-  Products(this.products, {this.deleteProduct}) {
+  // 92.7 Products(this.products, {this.deleteProduct}) {
+    Products(this.products) {
     print('E: [Products Widget] Constructor');
   }
 
@@ -56,13 +58,14 @@ class Products extends StatelessWidget {
                       ) 81.3*/
                     Navigator.pushNamed<bool>(
                             context, '/product/' + index.toString())//81.3
-                        .then((bool value) {
+                        /*92.8 .then((bool value) {
                       // 71.7
                       if (value) {
                         deleteProduct(index);
                       } // 71.7
                       // print(value);
-                    }), // 71.2.2
+                    } 
+                    ) 92.8 */, // 71.2.2
               )
             ],
           ) //67.1

@@ -9,15 +9,16 @@ import '../product_manager.dart';
 
 // 73.4 HomePage to ProductsPage
 class ProductsPage extends StatelessWidget {
-
+//92.15.3 String tp dynamic
   //80.7
-  final List<Map<String,String>> products;
-  final Function addProduct;
-  final Function deleteProduct;
-
+  final List<Map<String, dynamic>> products;
+  //92.2
+  // final Function addProduct;
+  // final Function deleteProduct; //92.2
+  //92.1
   // 80.8
-  ProductsPage(this.products,this.addProduct,this.deleteProduct);
-
+  // ProductsPage(this.products,this.addProduct,this.deleteProduct); /92.1
+  ProductsPage(this.products);
   @override
   Widget build(BuildContext context) {
     // 66.3 cut/copy the from main.dart
@@ -33,7 +34,6 @@ class ProductsPage extends StatelessWidget {
               title: Text('Choose'),
             ),
             ListTile(
-              
               title: Text('Manage Products'),
               onTap: () {
                 /* 78.3 now we can use route name for pushing 
@@ -41,11 +41,10 @@ class ProductsPage extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => ProductsAdminPage())); */
-                        Navigator.pushReplacementNamed(context,'/admin'); // 78.3
+                Navigator.pushReplacementNamed(context, '/admin'); // 78.3
               },
             ),
             ListTile(
-              
               title: Text('Manage Products 1'),
               onTap: () {
                 //assignment 2
@@ -56,7 +55,6 @@ class ProductsPage extends StatelessWidget {
               },
             ),
             ListTile(
-              
               title: Text('Manage Products 2'),
               onTap: () {
                 //assignment 3
@@ -75,7 +73,8 @@ class ProductsPage extends StatelessWidget {
       ),
       // 80.9
       // body: ProductManager(), 80.9
-      body: ProductManager(products,addProduct,deleteProduct),
+      //92.3 body: ProductManager(products,addProduct,deleteProduct),
+      body: ProductManager(products),
     );
   }
 }

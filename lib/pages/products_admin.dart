@@ -5,6 +5,11 @@ import './product_create.dart';
 import './product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
+  //92.10
+  final Function addProduct;
+  final Function deleteProdcut;
+  ProductsAdminPage(this.addProduct, this.deleteProdcut); //92.10
+
   @override
   Widget build(BuildContext context) {
     return
@@ -30,7 +35,7 @@ class ProductsAdminPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => ProductsPage())); 81.1*/
-                  Navigator.pushReplacementNamed(context, '/');
+                  Navigator.pushReplacementNamed(context, '/products');
                 },
               )
             ],
@@ -59,7 +64,9 @@ class ProductsAdminPage extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             // 76.7
-            ProductCreatePage(),
+            // 92.11 ProductCreatePage(),
+            ProductCreatePage(addProduct),
+
             ProductListPage()
           ],
         ), //76.3
