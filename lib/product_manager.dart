@@ -1,6 +1,6 @@
+/* 111.7 we dont need product_manager any more 
 import 'package:flutter/material.dart';
 import './products.dart';
-import './product_control.dart';
 
 // 80.4.1
 class ProductManager extends StatelessWidget {
@@ -107,3 +107,5 @@ class _ProductManagerState extends State<ProductManager> {
     );
   }
 } 80.4*/
+
+111.7*/

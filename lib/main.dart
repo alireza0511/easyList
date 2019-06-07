@@ -7,6 +7,12 @@ import './pages/products.dart';
 import './pages/product.dart';
 
 void main() {
+    // 47.2 this variable help to see the ui elements
+  // debugPaintSizeEnabled = true;
+  // 48.1 show text base line
+  // debugPaintBaselinesEnabled = true;
+  // 48.2 This shows you where the tap event is registered
+  // debugPaintPointersEnabled = true;
   runApp(MyApp());
 }
 
@@ -18,9 +24,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  //92.15.1 String tp dynamic
   List<Map<String, dynamic>> _products = [];
-//92.15.2 String tp dynamic
   void _addProduct(Map<String, dynamic> product) {
     setState(() {
       _products.add(product);
@@ -37,15 +41,13 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.deepOrange,
-          accentColor: Colors.deepPurple),
+        brightness: Brightness.light,
+        primarySwatch: Colors.blue,
+        accentColor: Colors.blueAccent,
+        // 102.4
+        // fontFamily: 'Oswald' //102.4
+      ),
       routes: {
-        /* 91.3 because we want to move the add product btn to create page let's 
-      move it 
-        '/': (BuildContext context) =>
-            ProductsPage(_products, _addProduct, _deleteProduct),
-        '/admin': (BuildContext context) => ProductsAdminPage(),91.3*/
         '/': (BuildContext context) => AuthPage(),
         '/products': (BuildContext context) => ProductsPage(_products),
         '/admin': (BuildContext context) =>
@@ -62,15 +64,17 @@ class _MyAppState extends State<MyApp> {
 
           return MaterialPageRoute<bool>(
             builder: (BuildContext context) => ProductPage(
-                _products[index]['title'], _products[index]['image']),
+                _products[index]['title'], _products[index]['image'],
+                // assignment 5
+                _products[index]['description'], _products[index]['price']
+                ),
           );
         }
         return null;
       },
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(
-            builder: (BuildContext context) => ProductsPage(
-                _products)); // 92.16 , _addProduct, _deleteProduct));
+            builder: (BuildContext context) => ProductsPage(_products));
       },
     );
   }
@@ -95,3 +99,7 @@ class _MyAppState extends State<MyApp> {
  * String _titleValue = '';
  */
 // 95 how implement switch in flutter
+// 103. Working with Rows
+/* 111. Outsourcing Code into Separate Widgets make a 'widgets' folder 
+then create a 'products' subfolder then move products.dart from main folder
+to products subfolder*/

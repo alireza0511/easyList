@@ -18,29 +18,7 @@ class ProductsAdminPage extends StatelessWidget {
       length: 2,
       child: //76.1
           Scaffold(
-        drawer: Drawer(
-          child: Column(
-            children: <Widget>[
-              AppBar(
-                // 74.2
-                automaticallyImplyLeading: false, // 74.2
-
-                title: Text('Choose'),
-              ),
-              ListTile(
-                title: Text('Manage Products 2'),
-                onTap: () {
-                  /*81.1 
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => ProductsPage())); 81.1*/
-                  Navigator.pushReplacementNamed(context, '/products');
-                },
-              )
-            ],
-          ),
-        ),
+        drawer: _buildSideDrawer(context),
         appBar: AppBar(
           title: Text('Products'),
           // 76.2
@@ -72,5 +50,34 @@ class ProductsAdminPage extends StatelessWidget {
         ), //76.3
       ),
     );
+  }
+
+  Drawer _buildSideDrawer(BuildContext context) {
+    return Drawer(
+        child: Column(
+          children: <Widget>[
+            AppBar(
+              // 74.2
+              automaticallyImplyLeading: false, // 74.2
+
+              title: Text('Choose'),
+            ),
+            ListTile(
+              //109.2
+              leading: Icon(Icons.shop),
+              
+              title: Text('Manage Products 2'),
+              onTap: () {
+                /*81.1 
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => ProductsPage())); 81.1*/
+                Navigator.pushReplacementNamed(context, '/products');
+              },
+            )
+          ],
+        ),
+      );
   }
 }

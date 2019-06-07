@@ -1,66 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:my_course_app/widgets/products/address_tag.dart';
+import 'package:my_course_app/widgets/products/price_tag.dart';
+import 'package:my_course_app/widgets/ui_elements/title_defualt.dart';
 
-// 67.3
 class ProductPage extends StatelessWidget {
-//70.1 we want to pass data from home page to detailPage we need this variable
   final String title;
   final String imageUrl;
-  ProductPage(this.title, this.imageUrl); // 70.1
+  // assignment 5
+  final String description;
+  final double price;
+  // ProductPage(this.title, this.imageUrl);
+  ProductPage(
+      this.title, this.imageUrl, this.description, this.price); // assignment 5
 
   @override
   Widget build(BuildContext context) {
-    return
-        /* 72.1 We can wrap our page here with another widget which will simply listen to the back button 
-    being pressed*/
-        WillPopScope(
+    return WillPopScope(
       onWillPop: () {
         print('back btn tapped');
-        // 72.2
         Navigator.pop(context, false);
-        /* 72.3 WillPopScope need return a Future that allow to user leave or not leave the page.
-      but app will Crash! if the value of Future be 'true' because we're navigating manually here 
-      which we need to do because we want to pass our own data back but then here, this essentially
-      triggers another popping action and since we already are on the root page, it tries to pop the 
-      root page which crashes our app. So you should actually return false for Future.value to not 
-      continue with the original pop request which was issued by the click of that back button but 
-      to ignore that original request and only execute our custom request here.*/
         return Future.value(false);
       },
-      child:
-          // 67.4 because this page replace with homepage we need use scaffold wedget
-          Scaffold(
+      child: Scaffold(
         appBar: AppBar(
-          // 70.2.1
-          // title: Text('Product Detail'), // 70.2.1
-          title: Text(title),
+          title: Text("Detail Product"),
         ),
-        body:
-            /* 68.3
-      Center(
-        child: Text('On the Product Page'),
-      ), 68.3 add a sample back btn*/
-            /* 69.4 add Center
-          69.6 if we use an image on our design, We can get rid of that center widget 
-          because the image is a widget which will take the full available width so it 
-          will automatically span over the full width of the page and we don't need
-          to center it explicitly.
-          Center( */
-            Column(
-          // 69.1 horizental
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          //69.2 vertical
-          mainAxisAlignment: MainAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center, //assignment 5
           children: <Widget>[
-            // 70.2.2
-            // 69.5
-            // Image.asset('assets/food.jpg'), // 70.2.2
             Image.asset(imageUrl),
-            // 69.7 padding
             Container(
               padding: EdgeInsets.all(10),
-              child: Text('On the Product Page'),
+              child:
+                  /* 113.3 cut/past 
+              Text(
+                title,
+                style: TextStyle(
+                    fontSize: 26.0,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Oswald'),
+              ), */
+                  TitleDefualt(title), // 113.3
             ),
-            //69.8
+            SizedBox(
+              width: 8.0,
+            ),
+            buildAddressPriceRow(),
+            Container(
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                description,
+                textAlign: TextAlign.center,
+              ),
+            ),
+
+            /* assignment 5 
             Container(
               padding: EdgeInsets.all(10),
               child: RaisedButton(
@@ -69,21 +64,53 @@ class ProductPage extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
               ),
             ),
-            // 71.1 pass data from detail view to root view
             Container(
               padding: EdgeInsets.all(10),
               child: RaisedButton(
                   color: Theme.of(context).primaryColor,
                   child: Text('Delete'),
-                  onPressed: () => //83.1.1 Navigator.pop(context, true),
-                      //83.1.2
-                      _showWarningDialog(context)),
-            ) //71.1
+                  onPressed: () => _showWarningDialog(context)),
+             ) assignment 5*/
           ],
         ),
-        //69.6 ),
       ),
     );
+  }
+
+  Widget buildAddressPriceRow() {
+    return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              /*113.7 cut/past
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(4.0)),
+                child: Text(
+                  'Union Square, San Francisco',
+                  style: TextStyle(color: Colors.grey, fontFamily: 'Oswald'),
+                ),
+              ), */
+              AddressTag('Union Square, San Francisco'), //113.7
+              SizedBox(
+                width: 12.0,
+              ),
+
+              /*111.8 refactoring 
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.circular(5.0)),
+                child: Text(
+                  '\$${price.toString()}',
+                  style: TextStyle(color: Colors.white, fontFamily: 'Oswald'),
+                ),
+              ), 111.8*/
+              PriceTag(price.toString())
+            ],
+          );
   }
 
 //83.2 create a alert dialog
@@ -104,9 +131,7 @@ class ProductPage extends StatelessWidget {
               FlatButton(
                 child: Text('CONTINUE'),
                 onPressed: () {
-                  //83.2.1 this one close the dialog
                   Navigator.pop(context);
-                  // 83.2.2 this one close the detail page and pass data to root view
                   Navigator.pop(context, true);
                 },
               ),

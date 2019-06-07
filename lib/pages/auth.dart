@@ -23,59 +23,107 @@ class _AuthPageState extends State<AuthPage> {
         title: Text('Login'),
       ),
       body: Container(
-          margin: EdgeInsets.all(10.0),
-          child: ListView(
-            children: <Widget>[
-              TextField(
-                onChanged: (String value) {
-                  setState(() {
-                    _emailValue = value;
-                  });
-                },
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              TextField(
-                onChanged: (String value) {
-                  setState(() {
-                    _passwordValue = value;
-                  });
-                },
-                obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
-              ),
-              /* 95.1
+        //107.1
+        decoration: BoxDecoration(
+          image: _buildBackgroundImage(),
+        ), //107.1
+        // 107.2 change margin to padding
+        padding: EdgeInsets.all(10.0),
+        /* 108.1 we want make our textField center so we ListView widget is not a
+           good idea because it use all page
+          child: ListView( */
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              // 108.1
+              children: <Widget>[
+                _buildEmailTextField(),
+                SizedBox(
+                  height: 10.0,
+                ),
+                _buildPasswordTextField(),
+                /* 95.1
               Switch(
                 value: true,
                 onChanged: (bool value) {},
               ),95.1*/
-              // 95.2
-              SwitchListTile(
-                // 95.3.2
-                value: _acceotTerm,
-                onChanged: (bool value) {
-                  //95.3.3
-                  setState(() {
-                    _acceotTerm = value;
-                  });
-                },
-                title: Text('Accept Terms'),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              RaisedButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                child: Text('Log in'),
-                onPressed: () {
-                  print(_emailValue);
-                  print(_passwordValue);
-                  Navigator.pushReplacementNamed(context, '/products');
-                },
-              ),
-            ],
-          )),
+                // 95.2
+                _buildAcceptSwitch(),
+                SizedBox(
+                  height: 10.0,
+                ),
+                RaisedButton(
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
+                  child: Text('Log in'),
+                  onPressed: _submitForm,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _submitForm() {
+    print(_emailValue);
+    print(_passwordValue);
+    Navigator.pushReplacementNamed(context, '/products');
+  }
+
+  SwitchListTile _buildAcceptSwitch() {
+    return SwitchListTile(
+      // 95.3.2
+      value: _acceotTerm,
+      onChanged: (bool value) {
+        //95.3.3
+        setState(() {
+          _acceotTerm = value;
+        });
+      },
+      title: Text('Accept Terms'),
+    );
+  }
+
+  Widget _buildPasswordTextField() {
+    return TextField(
+      onChanged: (String value) {
+        setState(() {
+          _passwordValue = value;
+        });
+      },
+      obscureText: true,
+      decoration: InputDecoration(
+          labelText: 'Password',
+          // 108.2.2
+          filled: true,
+          fillColor: Colors.white),
+    );
+  }
+
+  DecorationImage _buildBackgroundImage() {
+    return DecorationImage(
+        fit: BoxFit.cover,
+        image: AssetImage('assets/background.jpg'),
+        // 107.3
+        colorFilter:
+            ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop));
+  }
+
+  TextField _buildEmailTextField() {
+    return TextField(
+      onChanged: (String value) {
+        setState(() {
+          _emailValue = value;
+        });
+      },
+      keyboardType: TextInputType.emailAddress,
+      decoration: InputDecoration(
+          labelText: 'Email',
+          // 108.2.1
+          filled: true,
+          fillColor: Colors.white),
     );
   }
 }
