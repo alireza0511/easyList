@@ -181,37 +181,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-    final double targetPadding = deviceWidth - targetWidth; // 118.1
+    
     //132.2.1 cut/copy GestureDetector Widget
-    final Widget pageContent = GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Container(
-        margin: EdgeInsets.all(10),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
-            children: <Widget>[
-              _buildTitleTextField(),
-              _buildDescTextField(),
-              _buildPriceTextField(),
-              SizedBox(
-                height: 10.0,
-              ),
-              RaisedButton(
-                child: Text('Save'),
-                textColor: Colors.white,
-                onPressed: _submitForm,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+    final Widget pageContent = _buildPageContent(context);
     //132.2.2 we can check this is on edit mode or add mode
     return widget.product == null
         ? pageContent
@@ -267,6 +239,40 @@ class _ProductEditPageState extends State<ProductEditPage> {
         ),
       ),
     ); 132.2.1*/
+  }
+
+  GestureDetector _buildPageContent(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+    final double targetPadding = deviceWidth - targetWidth; // 118.1
+    
+    return GestureDetector(
+    onTap: () {
+      FocusScope.of(context).requestFocus(FocusNode());
+    },
+    child: Container(
+      margin: EdgeInsets.all(10),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
+          children: <Widget>[
+            _buildTitleTextField(),
+            _buildDescTextField(),
+            _buildPriceTextField(),
+            SizedBox(
+              height: 10.0,
+            ),
+            RaisedButton(
+              child: Text('Save'),
+              textColor: Colors.white,
+              onPressed: _submitForm,
+            )
+          ],
+        ),
+      ),
+    ),
+  );
   }
 }
 

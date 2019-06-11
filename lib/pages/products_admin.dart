@@ -40,7 +40,8 @@ class ProductsAdminPage extends StatelessWidget {
 
             // 130.3 ProductListPage()
             //133.4 ProductListPage(products) //130.3
-            ProductListPage(products, updateProduct), //133.4 
+            //140.1 ProductListPage(products, updateProduct), //133.4 
+            ProductListPage(products, updateProduct, deleteProdcut), //140.1
           ],
         ),
       ),
