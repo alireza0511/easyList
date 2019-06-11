@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import './product_manager.dart';
 import 'package:flutter/rendering.dart';
 import './pages/auth.dart';
 import './pages/products_admin.dart';
@@ -46,16 +45,20 @@ class _MyAppState extends State<MyApp> {
         accentColor: Colors.blueAccent,
         // 102.4
         // fontFamily: 'Oswald' //102.4
+        // 119.1
+        buttonColor: Colors.blueAccent,
+
       ),
       routes: {
         '/': (BuildContext context) => AuthPage(),
         '/products': (BuildContext context) => ProductsPage(_products),
         '/admin': (BuildContext context) =>
-            ProductsAdminPage(_addProduct, _deleteProduct),
+            //130.1 ProductsAdminPage(_addProduct, _deleteProduct),
+            ProductsAdminPage(_addProduct, _deleteProduct, _products), //130.1
       },
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements =
-            settings.name.split('/'); // '/product/1'
+            settings.name.split('/'); 
         if (pathElements[0] != '') {
           return null;
         }
@@ -103,3 +106,5 @@ class _MyAppState extends State<MyApp> {
 /* 111. Outsourcing Code into Separate Widgets make a 'widgets' folder 
 then create a 'products' subfolder then move products.dart from main folder
 to products subfolder*/
+// 117 make our auth page responsible for landscape mode
+// 130 implement product_list page

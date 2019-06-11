@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-//73.7
-import './products.dart';
 
-// for assignment 4 we change to sataeful widget
 class AuthPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -11,75 +8,99 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String _emailValue = '';
-  String _passwordValue = '';
-  // 95.3
-  bool _acceotTerm = false;
+  // assignment 6.12
+  final Map <String, dynamic> _formData = {
+    'email' : null,
+    'password' : null,
+    'acceptTerms' : false
+  };
+  // String _emailValue = '';
+  // String _passwordValue = '';
+  // bool _acceotTerm = false;
+
+  // assignment 6.2
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    final double targetWidth =
+        deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95; //117.2
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
       ),
-      body: Container(
-        //107.1
-        decoration: BoxDecoration(
-          image: _buildBackgroundImage(),
-        ), //107.1
-        // 107.2 change margin to padding
-        padding: EdgeInsets.all(10.0),
-        /* 108.1 we want make our textField center so we ListView widget is not a
-           good idea because it use all page
-          child: ListView( */
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              // 108.1
-              children: <Widget>[
-                _buildEmailTextField(),
-                SizedBox(
-                  height: 10.0,
-                ),
-                _buildPasswordTextField(),
-                /* 95.1
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            image: _buildBackgroundImage(),
+          ),
+          padding: EdgeInsets.all(10.0),
+          // assignment 6
+          child: Center(
+              child: SingleChildScrollView(
+            child: Container(
+              width: targetWidth,
+              // assignment 6.1
+              child: Form(
+                // assignment 6.3
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    _buildEmailTextField(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    _buildPasswordTextField(),
+                    /* 95.1
               Switch(
                 value: true,
                 onChanged: (bool value) {},
               ),95.1*/
-                // 95.2
-                _buildAcceptSwitch(),
-                SizedBox(
-                  height: 10.0,
+
+                    _buildAcceptSwitch(),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    RaisedButton(
+                      textColor: Colors.white,
+                      child: Text('Log in'),
+                      onPressed: _submitForm,
+                    ),
+                  ],
                 ),
-                RaisedButton(
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  child: Text('Log in'),
-                  onPressed: _submitForm,
-                ),
-              ],
+              ),
             ),
-          ),
+          )),
         ),
       ),
     );
   }
 
   void _submitForm() {
-    print(_emailValue);
-    print(_passwordValue);
+    // assignment 6.4
+    if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
+      return;
+    }
+    // assignment 6.5
+    _formKey.currentState.save();
+
+    print(_formData);
+    
     Navigator.pushReplacementNamed(context, '/products');
   }
 
   SwitchListTile _buildAcceptSwitch() {
     return SwitchListTile(
-      // 95.3.2
-      value: _acceotTerm,
+      value: _formData['acceptTerms'],
       onChanged: (bool value) {
-        //95.3.3
+        // assignment 6.13 we still need set data here 
         setState(() {
-          _acceotTerm = value;
+          _formData['acceptTerms'] = value;
         });
       },
       title: Text('Accept Terms'),
@@ -87,18 +108,23 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget _buildPasswordTextField() {
-    return TextField(
-      onChanged: (String value) {
+    // assignment 6.6
+    return TextFormField(
+      // assignment 6.7
+      onSaved: (String value) {
         setState(() {
-          _passwordValue = value;
+          _formData['password'] = value;
         });
       },
       obscureText: true,
       decoration: InputDecoration(
-          labelText: 'Password',
-          // 108.2.2
-          filled: true,
-          fillColor: Colors.white),
+          labelText: 'Password', filled: true, fillColor: Colors.white),
+          // assignment 6.8
+      validator: (String value) {
+        if (value.isEmpty || value.length < 6) {
+          return 'Password is required and should be 6+ characters long.';
+        }
+      },
     );
   }
 
@@ -106,59 +132,30 @@ class _AuthPageState extends State<AuthPage> {
     return DecorationImage(
         fit: BoxFit.cover,
         image: AssetImage('assets/background.jpg'),
-        // 107.3
         colorFilter:
             ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop));
   }
 
-  TextField _buildEmailTextField() {
-    return TextField(
-      onChanged: (String value) {
+  Widget _buildEmailTextField() {
+    // assignment 6.9
+    return TextFormField(
+      // assignment 6.10
+      onSaved: (String value) {
         setState(() {
-          _emailValue = value;
+          _formData['email'] = value;
         });
       },
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
-          labelText: 'Email',
-          // 108.2.1
-          filled: true,
-          fillColor: Colors.white),
+          labelText: 'Email', filled: true, fillColor: Colors.white),
+          // assignment 6.11
+      validator: (String value) {
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'Please enter valid email address.';
+        }
+      },
     );
   }
 }
-/* assignment 4 
-//73.2
-class AuthPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Container(
-          margin: EdgeInsets.all(10.0),
-          child: ListView(
-            children: <Widget>[
-              TextField(),
-              TextField(),
-              RaisedButton(
-                child: Text('Log in'),
-                onPressed: () {
-                  /*81.2 
-            // 73.8 we want replace login page by products page, replacement simply means the current page completely gets replaced with this one.
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => ProductsPage()),
-            ); 81,2*/
-                  Navigator.pushReplacementNamed(context, '/products');
-                },
-              ),
-            ],
-          )),
-    );
-  }
-} assignment 4*/
-
-//73.3 rename the home.dart to products.dart

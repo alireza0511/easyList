@@ -1,11 +1,28 @@
-// 76.5 
 import 'package:flutter/material.dart';
 
 class ProductListPage extends StatelessWidget {
+  //130.4
+  final List<Map<String, dynamic>> products;
+  ProductListPage(this.products);
+
   @override
   Widget build(BuildContext context) {
-    // 77.1
-    return Center(child: Text('All Product'),);
+    return 
+    ListView.builder(
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          leading: Image.asset(products[index]['image']),
+          title: Text(products[index]['title']),
+          trailing: IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              
+            },
+          ),
+        );
+      },
+      itemCount: products.length,
+    );
   }
 
 }
