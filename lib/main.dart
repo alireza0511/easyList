@@ -6,12 +6,13 @@ import './pages/products.dart';
 import './pages/product.dart';
 
 void main() {
-    // 47.2 this variable help to see the ui elements
+  // 47.2 this variable help to see the ui elements
   // debugPaintSizeEnabled = true;
   // 48.1 show text base line
   // debugPaintBaselinesEnabled = true;
   // 48.2 This shows you where the tap event is registered
   // debugPaintPointersEnabled = true;
+
   runApp(MyApp());
 }
 
@@ -27,6 +28,13 @@ class _MyAppState extends State<MyApp> {
   void _addProduct(Map<String, dynamic> product) {
     setState(() {
       _products.add(product);
+    });
+  }
+
+  // 133.1 add update method
+  void _updateProduct(int index, Map<String, dynamic> product) {
+    setState(() {
+      _products[index] = product;
     });
   }
 
@@ -47,18 +55,19 @@ class _MyAppState extends State<MyApp> {
         // fontFamily: 'Oswald' //102.4
         // 119.1
         buttonColor: Colors.blueAccent,
-
       ),
+      debugShowCheckedModeBanner: false,
       routes: {
         '/': (BuildContext context) => AuthPage(),
         '/products': (BuildContext context) => ProductsPage(_products),
         '/admin': (BuildContext context) =>
             //130.1 ProductsAdminPage(_addProduct, _deleteProduct),
-            ProductsAdminPage(_addProduct, _deleteProduct, _products), //130.1
+            // 133.2 ProductsAdminPage(_addProduct, _deleteProduct, _products), //130.1
+            ProductsAdminPage(
+                _addProduct, _updateProduct, _deleteProduct, _products) //133.2
       },
       onGenerateRoute: (RouteSettings settings) {
-        final List<String> pathElements =
-            settings.name.split('/'); 
+        final List<String> pathElements = settings.name.split('/');
         if (pathElements[0] != '') {
           return null;
         }
@@ -67,10 +76,11 @@ class _MyAppState extends State<MyApp> {
 
           return MaterialPageRoute<bool>(
             builder: (BuildContext context) => ProductPage(
-                _products[index]['title'], _products[index]['image'],
+                _products[index]['title'],
+                _products[index]['image'],
                 // assignment 5
-                _products[index]['description'], _products[index]['price']
-                ),
+                _products[index]['description'],
+                _products[index]['price']),
           );
         }
         return null;
@@ -108,3 +118,6 @@ then create a 'products' subfolder then move products.dart from main folder
 to products subfolder*/
 // 117 make our auth page responsible for landscape mode
 // 130 implement product_list page
+// 131 we want to use create page as Edit page let's change the name product_create.dart to product_edit.dart
+// 133 update product when we edit
+// 134 make our textfeild focusable let create "helper" folder,

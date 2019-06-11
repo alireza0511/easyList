@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../product_manager.dart';
 import './products_admin.dart';
 import './products_admin1.dart';
 import './products_admin2.dart';
-import '../product_manager.dart';
 import '../widgets/products/products.dart';
 
 class ProductsPage extends StatelessWidget {
