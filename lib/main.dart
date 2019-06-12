@@ -4,6 +4,9 @@ import './pages/auth.dart';
 import './pages/products_admin.dart';
 import './pages/products.dart';
 import './pages/product.dart';
+import './models/product.dart';
+import 'package:scoped_model/scoped_model.dart';
+import './scoped-models/products.dart';
 
 void main() {
   // 47.2 this variable help to see the ui elements
@@ -24,15 +27,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, dynamic>> _products = [];
-  void _addProduct(Map<String, dynamic> product) {
+  /* 146.4 cut/past to soped-models/products..dart
+  // 145.2 List<Map<String, dynamic>> _products = [];
+  List<Product> _products = [];
+
+  //145.3 void _addProduct(Map<String, dynamic> product) {
+  void _addProduct(Product product) {
     setState(() {
       _products.add(product);
     });
   }
 
-  // 133.1 add update method
-  void _updateProduct(int index, Map<String, dynamic> product) {
+  //145.4  void _updateProduct(int index, Map<String, dynamic> product) {
+  void _updateProduct(int index, Product product) {
     setState(() {
       _products[index] = product;
     });
@@ -42,53 +49,63 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _products.removeAt(index);
     });
-  }
+  } 146.4*/
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        accentColor: Colors.blueAccent,
-        // 102.4
-        // fontFamily: 'Oswald' //102.4
-        // 119.1
-        buttonColor: Colors.blueAccent,
-      ),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        '/': (BuildContext context) => AuthPage(),
-        '/products': (BuildContext context) => ProductsPage(_products),
-        '/admin': (BuildContext context) =>
-            //130.1 ProductsAdminPage(_addProduct, _deleteProduct),
-            // 133.2 ProductsAdminPage(_addProduct, _deleteProduct, _products), //130.1
-            ProductsAdminPage(
-                _addProduct, _updateProduct, _deleteProduct, _products) //133.2
-      },
-      onGenerateRoute: (RouteSettings settings) {
-        final List<String> pathElements = settings.name.split('/');
-        if (pathElements[0] != '') {
-          return null;
-        }
-        if (pathElements[1] == 'product') {
-          final int index = int.parse(pathElements[2]);
+    return
+        // 148.1 we need to instantiate our model here
+        ScopedModel<ProductsModel>(
+      model: ProductsModel(),
+      child: //148.1
+          MaterialApp(
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.blue,
+          accentColor: Colors.blueAccent,
+          // 102.4
+          // fontFamily: 'Oswald' //102.4
+          buttonColor: Colors.blueAccent,
+        ),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          '/': (BuildContext context) => AuthPage(),
+          '/products': (BuildContext context) =>
+              ProductsPage(/*148.1 _products */),
+          '/admin': (BuildContext context) => ProductsAdminPage(
+              /*148.1 
+            _addProduct, _updateProduct, _deleteProduct, _products */
+              )
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          final List<String> pathElements = settings.name.split('/');
+          if (pathElements[0] != '') {
+            return null;
+          }
+          if (pathElements[1] == 'product') {
+            final int index = int.parse(pathElements[2]);
 
-          return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(
-                _products[index]['title'],
-                _products[index]['image'],
-                // assignment 5
-                _products[index]['description'],
-                _products[index]['price']),
-          );
-        }
-        return null;
-      },
-      onUnknownRoute: (RouteSettings settings) {
-        return MaterialPageRoute(
-            builder: (BuildContext context) => ProductsPage(_products));
-      },
+            return MaterialPageRoute<bool>(
+              builder: (BuildContext context) => ProductPage(
+                //149.1
+                index
+                   /*148.1 
+                  //145.5
+                  _products[index].title, //['title'],
+                  _products[index].image, //['image'],
+                  _products[index].description, //['description'],
+                  _products[index].price, //['price']),//145.5 */
+                  ),
+            );
+          }
+          return null;
+        },
+        onUnknownRoute: (RouteSettings settings) {
+          return MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  ProductsPage(/*148.1 _products */));
+        },
+      ),
     );
   }
 }
@@ -123,3 +140,12 @@ to products subfolder*/
 // 134 make our textfeild focusable let create "helper" folder,
 // 138 make product list pretier
 // 139 drag and delete in product list
+// 145 create models
+// 146 Add scoped_model 1.0.1 to our project let's go to .yami page
+// 147 start to using scoped model
+/**148 we instantiate our model scoped for that entire widget tree and that 
+ * will be my products. And this is where we instantiate our model,we create 
+ * one instance only when our app starts and we pass down that instance to the
+ *  material app and all its child widgets. this gets passed down without us 
+ * using the constructors so it gets passed down to all child widgets */
+// 149 we want use our Model scoped to fetch data in product page

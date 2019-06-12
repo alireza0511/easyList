@@ -5,17 +5,16 @@ import './products_admin2.dart';
 import '../widgets/products/products.dart';
 
 class ProductsPage extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
-
-  ProductsPage(this.products);
+  /*147.2 
+  //145.6 final List<Map<String, dynamic>> products;
+  final List<Product> products;0,
+  ProductsPage(this.products); 147.2*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _buildSideDrawer(context),
       appBar: AppBar(
         title: Text('EasyList'),
-
-        //110.3
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.favorite),
@@ -23,9 +22,7 @@ class ProductsPage extends StatelessWidget {
           )
         ],
       ),
-      // 111.6
-      // body: ProductManager(products), 
-      body: Products(products), // 111.6
+      body: Products(/*products*/),
     );
   }
 
@@ -38,7 +35,6 @@ class ProductsPage extends StatelessWidget {
             title: Text('Choose'),
           ),
           ListTile(
-            //109.1 by leading we can put everything before the title
             leading: Icon(Icons.edit),
             title: Text('Manage Products'),
             onTap: () {

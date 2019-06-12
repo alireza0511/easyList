@@ -1,151 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:my_course_app/widgets/products/product_card.dart';
-// import '../pages/product.dart';
 import './price_tag.dart';
+import '../../models/product.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../scoped-models/products.dart';
 
 class Products extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  /* 147.3
+  //145.7 final List<Map<String, dynamic>> products;
+  final List<Product> products;
 
   Products(this.products) {
     print('E: [Products Widget] Constructor');
-  }
-/*112.6 redundent code 
-  Widget _buildProductItem(BuildContext context, int index) {
-    return 
-    /*112.2 cut/past refactoring 
-    Card(
-      child: Column(
-        children: <Widget>[
-          Image.asset(products[index]['image']),
-          // 100.1 diffrenet type of space
-          SizedBox(
-            height: 10.0,
-          ),
-          Text(products[index]['title']),
-          //100.2 diffrenet type of space
-          Container(
-            margin: EdgeInsets.only(top: 10.0),
-            color: Colors.blue,
-            child: Text('margin space: ' + products[index]['title']),
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 10.0),
-              color: Colors.green,
-              child:
-                  // 103.1 show in a row
-                  Row(
-                // 103.3
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text(
-                    'padding space: ' + products[index]['title'],
-                    // 102.1
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Oswald'),
-                    //102.2 we need to add Oswald-Bold.ttf font file to the app lets go to pubspec.yami file
-                  ),
-                  SizedBox(
-                    width: 8.0,
-                  ),
-                  /* 111.2 cut/past this to price_tag.dart folder 
-                  /* 104.2
-                  //104.1
-                  DecoratedBox( */
-                  Container(
-                      // 104.2
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          // 104.3
-                          borderRadius: BorderRadius.circular(5.0)),
-                      child: Text(
-                        // 104.5
-                        '\$${products[index]['price'].toString()}',
-                        // 104.4
-                        style: TextStyle(color: Colors.white),
-                      )
-                      ), 111.2*/
-                      // 111.5 refactor the code
-                      PriceTag(products[index]['price'].toString())
-                  // 103.2 show price in row
-                ],
-              )),
-          Row(
-            children: <Widget>[
-              // 106.3
-              //100.3 diffrenet type of space
-              Flexible(
-                  fit: FlexFit.loose,
-                  flex: 2,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 10.0),
-                    child: Text('space padding: '),
-                  )), // 106.1
-              SizedBox(
-                width: 8.0,
-              ),
-              // 106.2
-              Expanded(flex: 5, child: Text("expanded")),
-            ],
-          ),
+  } 147.3*/
 
-          SizedBox(
-            height: 12.0,
-          ),
-          // 105.1
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 1.0),
-                borderRadius: BorderRadius.circular(4.0)),
-            child: Text('Union Square, San Francisco'),
-          ),
-
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              //110.1
-              // FlatButton( 110.1
-              IconButton(
-                // 110.1 child: Text('Details'),
-                icon: Icon(
-                  Icons.info,
-                  size: 40.0,
-                  color: Theme.of(context).accentColor,
-                ),
-                //iconSize: 20.0,
-                onPressed: () => Navigator.pushNamed<bool>(
-                    context, '/product/' + index.toString()),
-              ),
-
-              //110.2
-              IconButton(
-                icon: Icon(
-                  Icons.favorite_border,
-                ),
-                iconSize: 40.0,
-                color: Colors.red,
-                onPressed: () => Navigator.pushNamed<bool>(
-                    context, '/product/' + index.toString()),
-              )
-            ],
-          )
-        ],
-      ), 
-    )112.2*/;
-  } 112.6*/
-
-  Widget _buildProductList() {
+  Widget //147.5 _buildProductList() {
+      _buildProductList(List<Product> products) {
+    // 147.5
     Widget productCard;
     if (products.length > 0) {
       productCard = ListView.builder(
-        //112.7
-        // itemBuilder: _buildProductItem,
         itemBuilder: (BuildContext context, int index) =>
-            ProductCard(products[index], index), //112.7
+            ProductCard(products[index], index),
         itemCount: products.length,
       );
       /* collection view
@@ -162,6 +38,18 @@ class Products extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildProductList();
+    //147.4.1 return _buildProductList();
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) {
+        return _buildProductList(model.products);
+      },
+    );
   }
 }
+
+/* 147.4 here we need the products and this is now where the other part of 
+the scoped model comes into
+it will be called by the scoped model package whenever data in this model 
+changes 
+the second argument child we'll not really use that, it's essentially a child 
+which will not get that model data and we can safely ignore this for now.*/
