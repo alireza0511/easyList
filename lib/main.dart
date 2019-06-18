@@ -7,6 +7,7 @@ import './pages/product.dart';
 import './models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 import './scoped-models/products.dart';
+import './scoped-models/main.dart';
 
 void main() {
   // 47.2 this variable help to see the ui elements
@@ -55,8 +56,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return
         // 148.1 we need to instantiate our model here
-        ScopedModel<ProductsModel>(
-      model: ProductsModel(),
+        ScopedModel<MainModel>( //160.4 <ProductsModel>(
+      model: MainModel(), // 160.4 ProductsModel(),
       child: //148.1
           MaterialApp(
         theme: ThemeData(
@@ -149,3 +150,13 @@ to products subfolder*/
  *  material app and all its child widgets. this gets passed down without us 
  * using the constructors so it gets passed down to all child widgets */
 // 149 we want use our Model scoped to fetch data in product page
+// 153 Creating the Toggle favorite method
+// 155 how add notifyListener to notify our scoped model
+// 158 add user model
+/** 160 
+ * A mixin simply is a class we merged with another class, we can merge classes
+ * , and also we can import functionalities from class B into Class A and that 
+ * allows us to create a totally new scoped model, I'll name it main.dart 
+ * because that will be my main model essentially.160*/  
+
+ // 162 make a relationship between two model 

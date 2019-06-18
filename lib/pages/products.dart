@@ -3,6 +3,9 @@ import './products_admin.dart';
 import './products_admin1.dart';
 import './products_admin2.dart';
 import '../widgets/products/products.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scoped-models/products.dart';
+import '../scoped-models/main.dart';
 
 class ProductsPage extends StatelessWidget {
   /*147.2 
@@ -16,10 +19,22 @@ class ProductsPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('EasyList'),
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.favorite),
-            onPressed: () {},
-          )
+          //156.6
+          ScopedModelDescendant<MainModel>( // 160.7 <ProductsModel>(
+            builder: (BuildContext context, Widget child, MainModel model) { // 160.7 ProductsModel model) {
+              return // 156.6
+                  IconButton(
+                icon: Icon(
+                  // 156.9
+                  model.displayFavoriteOnly ? Icons.favorite : // 156.9
+                  Icons.favorite_border),
+                onPressed: () {
+                  //156.7
+                  model.toggleDisplayMode();
+                },
+              );
+            },
+          ),
         ],
       ),
       body: Products(/*products*/),

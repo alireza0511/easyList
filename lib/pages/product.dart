@@ -5,6 +5,7 @@ import 'package:my_course_app/widgets/products/price_tag.dart';
 import 'package:my_course_app/widgets/ui_elements/title_defualt.dart';
 import '../scoped-models/products.dart';
 import 'package:scoped_model/scoped_model.dart';
+import '../scoped-models/main.dart';
 
 class ProductPage extends StatelessWidget {
   /*149.1
@@ -30,10 +31,10 @@ class ProductPage extends StatelessWidget {
       },
       child:
           // 149.2 for fetch data from scoped model
-          ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget chile, ProductsModel model) {
+          ScopedModelDescendant<MainModel>( // 160.8  <ProductsModel>(
+        builder: (BuildContext context, Widget chile, MainModel model) { // 160.8 ProductsModel model) {
           // 149.3.1 get current product from model
-          final Product products = model.products[productIndex]; // 149.3.1
+          final Product products = model.allProducts[productIndex];//model.products[productIndex]; // 149.3.1
 
           return //149.2
               Scaffold(

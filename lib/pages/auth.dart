@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import '../scoped-models/main.dart';
 
 class AuthPage extends StatefulWidget {
   @override
@@ -8,24 +11,18 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  // assignment 6.12
-  final Map <String, dynamic> _formData = {
-    'email' : null,
-    'password' : null,
-    'acceptTerms' : false
+  final Map<String, dynamic> _formData = {
+    'email': null,
+    'password': null,
+    'acceptTerms': false
   };
-  // String _emailValue = '';
-  // String _passwordValue = '';
-  // bool _acceotTerm = false;
 
-  // assignment 6.2
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     final double deviceWidth = MediaQuery.of(context).size.width;
-    final double targetWidth =
-        deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95; //117.2
+    final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,14 +37,11 @@ class _AuthPageState extends State<AuthPage> {
             image: _buildBackgroundImage(),
           ),
           padding: EdgeInsets.all(10.0),
-          // assignment 6
           child: Center(
               child: SingleChildScrollView(
             child: Container(
               width: targetWidth,
-              // assignment 6.1
               child: Form(
-                // assignment 6.3
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
@@ -66,11 +60,16 @@ class _AuthPageState extends State<AuthPage> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    RaisedButton(
-                      textColor: Colors.white,
-                      child: Text('Log in'),
-                      onPressed: _submitForm,
-                    ),
+                    // 161.1
+                    ScopedModelDescendant<MainModel>(builder:
+                        (BuildContext context, Widget child, MainModel model) {
+                      return // 161.1
+                          RaisedButton(
+                        textColor: Colors.white,
+                        child: Text('Log in'),
+                        onPressed: () => _submitForm(model.login),// 161.3 _submitForm,
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -80,17 +79,16 @@ class _AuthPageState extends State<AuthPage> {
       ),
     );
   }
-
-  void _submitForm() {
-    // assignment 6.4
+// 161.2
+  void _submitForm(Function login) {
+    //  void _submitForm() { 161.2
     if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
       return;
     }
-    // assignment 6.5
     _formKey.currentState.save();
 
-    print(_formData);
-    
+    login(_formData['email'], _formData['password']);
+
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -98,7 +96,6 @@ class _AuthPageState extends State<AuthPage> {
     return SwitchListTile(
       value: _formData['acceptTerms'],
       onChanged: (bool value) {
-        // assignment 6.13 we still need set data here 
         setState(() {
           _formData['acceptTerms'] = value;
         });
@@ -108,9 +105,7 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget _buildPasswordTextField() {
-    // assignment 6.6
     return TextFormField(
-      // assignment 6.7
       onSaved: (String value) {
         setState(() {
           _formData['password'] = value;
@@ -119,7 +114,6 @@ class _AuthPageState extends State<AuthPage> {
       obscureText: true,
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
-          // assignment 6.8
       validator: (String value) {
         if (value.isEmpty || value.length < 6) {
           return 'Password is required and should be 6+ characters long.';
@@ -137,9 +131,7 @@ class _AuthPageState extends State<AuthPage> {
   }
 
   Widget _buildEmailTextField() {
-    // assignment 6.9
     return TextFormField(
-      // assignment 6.10
       onSaved: (String value) {
         setState(() {
           _formData['email'] = value;
@@ -148,7 +140,6 @@ class _AuthPageState extends State<AuthPage> {
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
           labelText: 'Email', filled: true, fillColor: Colors.white),
-          // assignment 6.11
       validator: (String value) {
         if (value.isEmpty ||
             !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")

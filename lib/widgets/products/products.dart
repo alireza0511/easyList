@@ -4,6 +4,7 @@ import './price_tag.dart';
 import '../../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../../scoped-models/products.dart';
+import '../../scoped-models/main.dart';
 
 class Products extends StatelessWidget {
   /* 147.3
@@ -39,9 +40,11 @@ class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //147.4.1 return _buildProductList();
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
-        return _buildProductList(model.products);
+    return ScopedModelDescendant<MainModel>( // 160.5 <ProductsModel>(
+      builder: (BuildContext context, Widget child, MainModel model) { // 160.5 ProductsModel model) {
+        return 
+        //156.5 _buildProductList(model.products);
+        _buildProductList(model.displayedProducts); //156.5
       },
     );
   }

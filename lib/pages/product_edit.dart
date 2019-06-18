@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_course_app/widgets/helper/ensure-visible.dart';
 import '../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../scoped-models/products.dart';
+import '../scoped-models/main.dart';
 
 class ProductEditPage extends StatefulWidget {
   /*150.6 
@@ -107,6 +107,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
   //147.9 void _submitForm() {
   // 150.15 void _submitForm(Function addProduct, Function updateProduct) {
   void _submitForm(Function addProduct, Function updateProduct,
+  // 164.6
+  Function setSelectedProduct, //164.6
       [int selectedProductIndex]) {
     if (!_formKey.currentState.validate()) {
       return;
@@ -117,12 +119,20 @@ class _ProductEditPageState extends State<ProductEditPage> {
     if (selectedProductIndex == null) {
       //145.12 widget.addProduct(_formData);
       //147.10 widget.addProduct(
-      addProduct(//147.10
-          Product(
+      addProduct(
+          //147.10
+          /* 162.17 Product(
               title: _formData['title'],
               description: _formData['description'],
               price: _formData['price'],
-              image: _formData['image'])); //145.12
+              image: _formData['image']) */
+          _formData['title'],
+          _formData['description'],
+          _formData['image'],
+          _formData['price'] //162.17
+
+          ); //145.12
+
     } else {
       //145.13 widget.updateProduct(widget.productIndex, _formData);
       //147.11 widget.updateProduct(
@@ -130,13 +140,18 @@ class _ProductEditPageState extends State<ProductEditPage> {
           //147.11
           // 150.17 widget.productIndex,
           // 151.1 selectedProductIndex,
-          Product(
-              title: _formData['title'],
-              description: _formData['description'],
-              price: _formData['price'],
-              image: _formData['image'])); //145.13
+          //162 17. Product(
+          _formData['title'],
+          _formData['description'],
+          _formData['image'],
+          _formData['price']
+          //)
+          ); //145.13
     }
-    Navigator.pushReplacementNamed(context, '/products');
+    Navigator.pushReplacementNamed(context, '/products')
+    // 164.5 pass  selected Product Index = null after done updating
+    .then((_) => setSelectedProduct(null))
+    ;
   }
 
   @override
@@ -145,8 +160,10 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
     return
         // 150.7
-        ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
+        ScopedModelDescendant<MainModel>(
+      //160.10 <ProductsModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        //160.10 ProductsModel model) {
         // 150.11
         final Widget pageContent =
             _buildPageContent(context, model.selectedProduct);
@@ -204,14 +221,18 @@ class _ProductEditPageState extends State<ProductEditPage> {
           textColor: Colors.white,
           onPressed: _submitForm,
         ); */
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+      // 160.10 <ProductsModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
+        //160.10 tsMoProducdel model) {
         return RaisedButton(
             child: Text('Save'),
             textColor: Colors.white,
             onPressed: () => _submitForm(
                 model.addProduct,
                 model.updateProduct,
+                //164.7
+                model.selectProduct,
                 // 150.15
                 model.selectedProductIndex));
       },

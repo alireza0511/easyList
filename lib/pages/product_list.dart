@@ -3,6 +3,7 @@ import 'package:my_course_app/pages/product_edit.dart';
 import '../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/products.dart';
+import '../scoped-models/main.dart';
 
 class ProductListPage extends StatelessWidget {
   /*150.19 
@@ -16,13 +17,13 @@ class ProductListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return
         // 150.20
-        ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
+        ScopedModelDescendant<MainModel>( // 160.9 <ProductsModel>(
+      builder: (BuildContext context, Widget child,MainModel model) { // 160.9 ProductsModel model) {
         return //150.20
             ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Dismissible(
-              key: Key(model.products[index].title),//150.21 Key(products[index].title), //['title']),
+              key: Key(model.allProducts[index].title),//150.21 Key(products[index].title), //['title']),
               background: Container(
                 color: Colors.red,
               ),
@@ -41,10 +42,10 @@ class ProductListPage extends StatelessWidget {
                   ListTile(
                     leading: CircleAvatar(
                       backgroundImage:
-                         AssetImage(model.products[index].image), //150.21 AssetImage(products[index].image), //['image']),
+                         AssetImage(model.allProducts[index].image), //150.21 AssetImage(products[index].image), //['image']),
                     ),
-                    title: Text(model.products[index].title), //150.21 Text(products[index].title), //['title']),
-                    subtitle: Text('\$${model.products[index].price.toString()}'), //150.21 Text('\$${products[index].price.toString()}'),
+                    title: Text(model.allProducts[index].title), //150.21 Text(products[index].title), //['title']),
+                    subtitle: Text('\$${model.allProducts[index].price.toString()}'), //150.21 Text('\$${products[index].price.toString()}'),
                     trailing: _buildEditButton(context, index, model), //150.24 _buildEditButton(context, index),
                   ),
                   Divider()
@@ -52,14 +53,16 @@ class ProductListPage extends StatelessWidget {
               ),
             );
           },
-          itemCount: model.products.length,//150.21 products.length,
+          itemCount: model.allProducts.length,//150.21 products.length,
         );
       },
     );
   }
 
   // 150.23 Widget _buildEditButton(BuildContext context, int index) {
-    Widget _buildEditButton(BuildContext context, int index, ProductsModel model) {
+    Widget _buildEditButton(BuildContext context, int index, 
+    // 165.1 ProductsModel model) {
+      MainModel model) { //165.1
     /*150.22 
     return
         
@@ -72,6 +75,7 @@ class ProductListPage extends StatelessWidget {
           onPressed: () {
             // 150.6
             model.selectProduct(index);
+              
 
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -84,6 +88,9 @@ class ProductListPage extends StatelessWidget {
                       );
                 },
               ),
+            )
+            // 165.2
+            .then((_) {model.selectProduct(null);}
             );
           },
         );
@@ -91,3 +98,5 @@ class ProductListPage extends StatelessWidget {
     // 150.22 );
   }
 }
+
+          // 162.14 change model.products to model.allProducts it's not private here
